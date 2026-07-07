@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NeuralForge — AI-агентство полного цикла</title>
+  <!-- Шрифты и иконки -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #f9fafc;
+      color: #0b1a2e;
+      line-height: 1.6;
+      scroll-behavior: smooth;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* ГРАДИЕНТЫ И ТЕНИ */
+    .gradient-text {
+      background: linear-gradient(135deg, #6e3eff, #a855f7);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .btn-primary {
+      display: inline-block;
+      background: #6e3eff;
+      color: #fff;
+      padding: 14px 36px;
+      border-radius: 60px;
+      font-weight: 600;
+      font-size: 1rem;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      box-shadow: 0 8px 24px rgba(110, 62, 255, 0.35);
+    }
+
+    .btn-primary:hover {
+      background: #5a2ee0;
+      transform: translateY(-3px);
+      box-shadow: 0 14px 32px rgba(110, 62, 255, 0.45);
+    }
+
+    .btn-outline {
+      display: inline-block;
+      background: transparent;
+      color: #0b1a2e;
+      padding: 14px 36px;
+      border-radius: 60px;
+      font-weight: 600;
+      font-size: 1rem;
+      border: 2px solid #d0d9e8;
+      transition: all 0.3s ease;
+      text-decoration: none;
+    }
+
+    .btn-outline:hover {
+      border-color: #6e3eff;
+      color: #6e3eff;
+      background: rgba(110, 62, 255, 0.04);
+    }
+
+    /* ШАПКА */
+    header {
+      padding: 20px 0;
+      background: rgba(249, 250, 252, 0.8);
+      backdrop-filter: blur(12px);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      border-bottom: 1px solid rgba(0,0,0,0.02);
+    }
+
+    .header-flex {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .logo {
+      font-size: 1.8rem;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+    }
+
+    .logo span {
+      color: #6e3eff;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 32px;
+      align-items: center;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: #1f2a44;
+      font-weight: 500;
+      font-size: 0.95rem;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover {
+      color: #6e3eff;
+    }
+
+    .hamburger {
+      display: none;
+      font-size: 1.8rem;
+      cursor: pointer;
+      color: #1f2a44;
+    }
+
+    /* ГЕРОЙ */
+    .hero {
+      padding: 60px 0 80px;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      align-items: center;
+    }
+
+    .hero-badge {
+      background: rgba(110, 62, 255, 0.10);
+      color: #6e3eff;
+      padding: 6px 18px;
+      border-radius: 40px;
+      font-weight: 600;
+      font-size: 0.85rem;
+      display: inline-block;
+      margin-bottom: 20px;
+      letter-spacing: 0.3px;
+    }
+
+    .hero h1 {
+      font-size: 3.4rem;
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -1px;
+      margin-bottom: 20px;
+    }
+
+    .hero p {
+      font-size: 1.2rem;
+      color: #3d4e6b;
+      max-width: 500px;
+      margin-bottom: 32px;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .hero-stats {
+      display: flex;
+      gap: 48px;
+      margin-top: 48px;
+    }
+
+    .stat-item h3 {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #0b1a2e;
+    }
+
+    .stat-item p {
+      font-size: 0.9rem;
+      color: #5f7290;
+      margin: 0;
+    }
+
+    .hero-image {
+      background: linear-gradient(145deg, #e9edf5, #d5dde9);
+      border-radius: 32px;
+      padding: 20px;
+      text-align: center;
+      box-shadow: 0 20px 40px -12px rgba(0,0,0,0.1);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 320px;
+      background-image: radial-gradient(circle at 30% 40%, rgba(110,62,255,0.05) 0%, transparent 60%);
+    }
+
+    .hero-image i {
+      font-size: 8rem;
+      color: #6e3eff;
+      opacity: 0.6;
+    }
+
+    /* КЛИЕНТЫ / ЛОГОТИПЫ */
+    .clients {
+      padding: 40px 0 60px;
+      border-top: 1px solid #e4eaf2;
+    }
+
+    .clients p {
+      text-align: center;
+      color: #5f7290;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+      margin-bottom: 24px;
+      text-transform: uppercase;
+      font-size: 0.8rem;
+    }
+
+    .logo-grid {
+      display: flex;
+      justify-content: space-around;
+      flex-wrap: wrap;
+      gap: 30px;
+      opacity: 0.7;
+    }
+
+    .logo-grid span {
+      font-weight: 600;
+      font-size: 1.2rem;
+      color: #2d3f5e;
+      letter-spacing: 1px;
+    }
+
+    /* УСЛУГИ */
+    .services {
+      padding: 80px 0;
+    }
+
+    .section-label {
+      font-weight: 600;
+      color: #6e3eff;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      font-size: 0.8rem;
+      margin-bottom: 8px;
+    }
+
+    .section-title {
+      font-size: 2.6rem;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      margin-bottom: 16px;
+    }
+
+    .section-desc {
+      color: #3d4e6b;
+      max-width: 600px;
+      font-size: 1.1rem;
+      margin-bottom: 48px;
+    }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 30px;
+    }
+
+    .service-card {
+      background: #fff;
+      padding: 32px 24px;
+      border-radius: 24px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.02);
+      border: 1px solid #edeff4;
+      transition: all 0.3s ease;
+    }
+
+    .service-card:hover {
+      transform: translateY(-8px);
+      border-color: #d5c9ff;
+      box-shadow: 0 20px 40px -12px rgba(110,62,255,0.15);
+    }
+
+    .service-card i {
+      font-size: 2.4rem;
+      color: #6e3eff;
+      margin-bottom: 16px;
+    }
+
+    .service-card h3 {
+      font-size: 1.3rem;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    .service-card p {
+      color: #5f7290;
+      font-size: 0.95rem;
+    }
+
+    /* КЕЙСЫ */
+    .cases {
+      padding: 80px 0;
+      background: #fff;
+    }
+
+    .cases-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 30px;
+      margin-top: 20px;
+    }
+
+    .case-item {
+      border-radius: 24px;
+      padding: 28px;
+      background: #f5f7fc;
+      transition: 0.25s;
+      border: 1px solid transparent;
+    }
+
+    .case-item:hover {
+      border-color: #d5c9ff;
+      background: #fafaff;
+    }
+
+    .case-item .tag {
+      background: #6e3eff20;
+      color: #6e3eff;
+      padding: 4px 14px;
+      border-radius: 40px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      display: inline-block;
+      margin-bottom: 12px;
+    }
+
+    .case-item h4 {
+      font-size: 1.3rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .case-item p {
+      color: #3d4e6b;
+      font-size: 0.95rem;
+    }
+
+    /* ОТЗЫВЫ */
+    .testimonials {
+      padding: 80px 0;
+    }
+
+    .testimonial-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 30px;
+    }
+
+    .testimonial-card {
+      background: #fff;
+      padding: 28px;
+      border-radius: 24px;
+      border: 1px solid #eaeef5;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+    }
+
+    .testimonial-card i {
+      color: #6e3eff;
+      font-size: 1.8rem;
+      opacity: 0.3;
+      margin-bottom: 12px;
+    }
+
+    .testimonial-card p {
+      font-style: italic;
+      color: #1f2a44;
+      margin-bottom: 16px;
+    }
+
+    .testimonial-card .author {
+      font-weight: 600;
+      color: #0b1a2e;
+    }
+
+    .testimonial-card .role {
+      font-size: 0.85rem;
+      color: #5f7290;
+    }
+
+    /* CTA */
+    .cta {
+      padding: 80px 0;
+      background: #0b1a2e;
+      color: #fff;
+      text-align: center;
+      border-radius: 40px 40px 0 0;
+      margin-top: 20px;
+    }
+
+    .cta h2 {
+      font-size: 2.6rem;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+    }
+
+    .cta p {
+      color: #b2c4e0;
+      font-size: 1.2rem;
+      max-width: 500px;
+      margin: 16px auto 32px;
+    }
+
+    .cta .btn-primary {
+      background: #fff;
+      color: #0b1a2e;
+      box-shadow: none;
+    }
+
+    .cta .btn-primary:hover {
+      background: #e9edf5;
+      transform: translateY(-3px);
+    }
+
+    /* ПОДВАЛ */
+    footer {
+      background: #0b1a2e;
+      color: #a3b8d6;
+      padding: 40px 0 30px;
+      border-top: 1px solid #1f3150;
+    }
+
+    .footer-flex {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 30px;
+    }
+
+    .footer-col h4 {
+      color: #fff;
+      font-weight: 600;
+      margin-bottom: 16px;
+    }
+
+    .footer-col a {
+      color: #a3b8d6;
+      text-decoration: none;
+      display: block;
+      margin-bottom: 10px;
+      transition: color 0.2s;
+    }
+
+    .footer-col a:hover {
+      color: #fff;
+    }
+
+    .footer-bottom {
+      margin-top: 40px;
+      border-top: 1px solid #1f3150;
+      padding-top: 24px;
+      text-align: center;
+      font-size: 0.9rem;
+    }
+
+    /* Адаптив */
+    @media (max-width: 900px) {
+      .hero-grid {
+        grid-template-columns: 1fr;
+        text-align: center;
+      }
+
+      .hero p {
+        max-width: 100%;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .hero-actions {
+        justify-content: center;
+      }
+
+      .hero-stats {
+        justify-content: center;
+      }
+
+      .hero-image {
+        min-height: 200px;
+      }
+
+      .hero h1 {
+        font-size: 2.6rem;
+      }
+
+      .section-title {
+        font-size: 2rem;
+      }
+
+      .nav-links {
+        display: none;
+        flex-direction: column;
+        width: 100%;
+        padding: 20px 0;
+        gap: 16px;
+        background: #f9fafc;
+      }
+
+      .nav-links.active {
+        display: flex;
+      }
+
+      .hamburger {
+        display: block;
+      }
+
+      .header-flex {
+        flex-wrap: wrap;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .hero h1 {
+        font-size: 2.1rem;
+      }
+
+      .hero-stats {
+        flex-direction: column;
+        gap: 16px;
+      }
+
+      .stat-item {
+        text-align: center;
+      }
+    }
+
+    /* анимация появления */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeUp 0.6s ease forwards;
+    }
+
+    @keyframes fadeUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .delay-1 { animation-delay: 0.1s; }
+    .delay-2 { animation-delay: 0.2s; }
+    .delay-3 { animation-delay: 0.3s; }
+  </style>
+</head>
+<body>
+
+  <!-- ШАПКА -->
+  <header>
+    <div class="container header-flex">
+      <div class="logo">Neural<span>Forge</span></div>
+      <div class="hamburger" id="hamburger">
+        <i class="fas fa-bars"></i>
+      </div>
+      <div class="nav-links" id="navLinks">
+        <a href="#services">Услуги</a>
+        <a href="#cases">Кейсы</a>
+        <a href="#testimonials">Отзывы</a>
+        <a href="#cta" class="btn-primary" style="padding: 10px 24px; font-size: 0.9rem;">Связаться</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- ГЕРОЙ -->
+    <section class="hero">
+      <div class="container hero-grid">
+        <div class="hero-content fade-in">
+          <span class="hero-badge"><i class="fas fa-robot" style="margin-right: 8px;"></i> AI-агентство</span>
+          <h1>Создаём <span class="gradient-text">цифровых двойников</span> для бизнеса</h1>
+          <p>Разрабатываем автономных AI-агентов, которые обрабатывают запросы, генерируют контент и увеличивают продажи 24/7.</p>
+          <div class="hero-actions">
+            <a href="#cta" class="btn-primary">Заказать агента</a>
+            <a href="#services" class="btn-outline">Узнать больше</a>
+          </div>
+          <div class="hero-stats">
+            <div class="stat-item">
+              <h3>150+</h3>
+              <p>агентов внедрено</p>
+            </div>
+            <div class="stat-item">
+              <h3>4.9</h3>
+              <p>средний рейтинг</p>
+            </div>
+            <div class="stat-item">
+              <h3>97%</h3>
+              <p>точность ответов</p>
+            </div>
+          </div>
+        </div>
+        <div class="hero-image fade-in delay-1">
+          <i class="fas fa-brain"></i>
+        </div>
+      </div>
+    </section>
+
+    <!-- КЛИЕНТЫ -->
+    <section class="clients">
+      <div class="container">
+        <p>Доверяют лидеры рынка</p>
+        <div class="logo-grid">
+          <span>▸ TechCorp</span>
+          <span>▸ FinBridge</span>
+          <span>▸ MediaWave</span>
+          <span>▸ RetailAI</span>
+          <span>▸ LogiNext</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- УСЛУГИ -->
+    <section class="services" id="services">
+      <div class="container">
+        <p class="section-label">Что мы делаем</p>
+        <h2 class="section-title">AI-агенты под ваши задачи</h2>
+        <p class="section-desc">Мы не просто внедряем чат-ботов — мы создаём интеллектуальных помощников, которые учатся, адаптируются и приносят прибыль.</p>
+        <div class="services-grid">
+          <div class="service-card fade-in">
+            <i class="fas fa-comment-dots"></i>
+            <h3>Клиентские агенты</h3>
+            <p>Обрабатывают входящие запросы, консультируют, помогают с выбором и оформлением заказов без участия человека.</p>
+          </div>
+          <div class="service-card fade-in delay-1">
+            <i class="fas fa-pen-fancy"></i>
+            <h3>Контент-агенты</h3>
+            <p>Генерируют посты, статьи, рассылки и сценарии для соцсетей в едином тоне вашего бренда. Экономия до 30 часов в неделю.</p>
+          </div>
+          <div class="service-card fade-in delay-2">
+            <i class="fas fa-chart-line"></i>
+            <h3>Аналитические агенты</h3>
+            <p>Собирают данные, строят прогнозы, находят инсайты и дают рекомендации по оптимизации бизнес-процессов.</p>
+          </div>
+          <div class="service-card fade-in delay-3">
+            <i class="fas fa-code"></i>
+            <h3>Кастомные решения</h3>
+            <p>Разрабатываем агентов под специфику вашей отрасли: от HR-скрининга до юридической проверки документов.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- КЕЙСЫ -->
+    <section class="cases" id="cases">
+      <div class="container">
+        <p class="section-label">Результаты</p>
+        <h2 class="section-title">Кейсы внедрений</h2>
+        <p class="section-desc">Реальные проекты, где AI-агенты уже работают и приносят измеримую пользу.</p>
+        <div class="cases-grid">
+          <div class="case-item">
+            <span class="tag">e-commerce</span>
+            <h4>+42% конверсии</h4>
+            <p>AI-агент для интернет-магазина обработал 76% обращений без участия операторов, средний чек вырос на 12%.</p>
+          </div>
+          <div class="case-item">
+            <span class="tag">финансы</span>
+            <h4>Сокращение рутины на 60%</h4>
+            <p>Агент-аналитик еженедельно готовит отчёты по 15 источникам, освобождая команду для стратегических задач.</p>
+          </div>
+          <div class="case-item">
+            <span class="tag">образование</span>
+            <h4>Персональный тьютор</h4>
+            <p>Онлайн-школа внедрила AI-ассистента для проверки заданий и адаптивной обратной связи — удержание +28%.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ОТЗЫВЫ -->
+    <section class="testimonials" id="testimonials">
+      <div class="container">
+        <p class="section-label">Клиенты говорят</p>
+        <h2 class="section-title">Отзывы о работе</h2>
+        <p class="section-desc">Мы ценим обратную связь и всегда стремимся к совершенству.</p>
+        <div class="testimonial-grid">
+          <div class="testimonial-card">
+            <i class="fas fa-quote-right"></i>
+            <p>«Команда NeuralForge быстро погрузилась в наш продукт и создала агента, который отвечает как живой менеджер. Рекомендую!»</p>
+            <div class="author">Алексей Г.</div>
+            <div class="role">CEO, TechCorp</div>
+          </div>
+          <div class="testimonial-card">
+            <i class="fas fa-quote-right"></i>
+            <p>«Благодаря AI-агенту мы автоматизировали 80% типовых вопросов. Клиенты довольны, отдел поддержки выдохнул.»</p>
+            <div class="author">Мария К.</div>
+            <div class="role">Head of CX, FinBridge</div>
+          </div>
+          <div class="testimonial-card">
+            <i class="fas fa-quote-right"></i>
+            <p>«Агент для контента пишет тексты в нашем стиле, мы даже не правим. Это сэкономило нам бюджет на копирайтера.»</p>
+            <div class="author">Дмитрий Н.</div>
+            <div class="role">Marketing Lead, MediaWave</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta" id="cta">
+      <div class="container">
+        <h2>Готовы усилить бизнес <span class="gradient-text">AI-агентами</span>?</h2>
+        <p>Оставьте заявку — мы подберём архитектуру, обучим модель и интегрируем в ваши процессы за 5 дней.</p>
+        <a href="#" class="btn-primary"><i class="fas fa-rocket" style="margin-right: 10px;"></i>Получить консультацию</a>
+      </div>
+    </section>
+  </main>
+
+  <!-- ПОДВАЛ -->
+  <footer>
+    <div class="container">
+      <div class="footer-flex">
+        <div class="footer-col">
+          <h4>NeuralForge</h4>
+          <a href="#">О нас</a>
+          <a href="#">Блог</a>
+          <a href="#">Вакансии</a>
+        </div>
+        <div class="footer-col">
+          <h4>Услуги</h4>
+          <a href="#">Клиентские агенты</a>
+          <a href="#">Контент-агенты</a>
+          <a href="#">Аналитика</a>
+        </div>
+        <div class="footer-col">
+          <h4>Контакты</h4>
+          <a href="#"><i class="fas fa-envelope"></i> hello@neuralforge.ai</a>
+          <a href="#"><i class="fas fa-phone"></i> +7 (495) 000-00-00</a>
+          <div style="display: flex; gap: 16px; margin-top: 16px;">
+            <a href="#"><i class="fab fa-telegram"></i></a>
+            <a href="#"><i class="fab fa-linkedin"></i></a>
+            <a href="#"><i class="fab fa-youtube"></i></a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        &copy; 2026 NeuralForge — AI-агентство полного цикла.
+      </div>
+    </div>
+  </footer>
+
+  <!-- Мобильное меню -->
+  <script>
+    const hamburger = document.getElementById('hamburger');
+    const navLinks = document.getElementById('navLinks');
+
+    hamburger.addEventListener('click', () => {
+      navLinks.classList.toggle('active');
+    });
+  </script>
+</body>
+</html>
